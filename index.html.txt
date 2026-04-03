@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="CHETHUU" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Mera baccha!</title>
+    
+    <!-- Google Fonts: A modern serif for headings and a clean sans-serif for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+        ----------------------------------
+        CORE DESIGN SYSTEM & GLOBAL STYLES
+        ----------------------------------
+        This is the "Look and Feel" of our 2026 website.
+        - Dark Mode Aesthetic: Deep, rich background.
+        - Accent Colors: A vibrant, futuristic purple/blue gradient.
+        - Typography: Elegant serif for emotion, clean sans-serif for clarity.
+        - Glassmorphism: Frosted glass effect for UI elements.
+        */
+
+        :root {
+            --dark-bg: #0d0c1d;
+            --primary-text: #e0e0e0;
+            --secondary-text: #a0a0b0;
+            --accent-glow-1: #6a11cb;
+            --accent-glow-2: #2575fc;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Poppins', sans-serif;
+            --transition-speed: 0.5s;
+        }
+
+        /* --- Global Reset & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--primary-text);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            overflow-y: hidden; /* Prevent scrolling before entry */
+            line-height: 1.8;
+        }
+
+        /* --- Animated Aurora Background --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 10% 20%, var(--accent-glow-1), transparent 40%),
+                radial-gradient(circle at 80% 90%, var(--accent-glow-2), transparent 40%),
+                radial-gradient(circle at 50% 50%, #8a2be2, transparent 50%);
+            background-size: 200% 200%;
+            opacity: 0.2;
+            filter: blur(100px);
+            animation: aurora-flow 25s linear infinite;
+        }
+
+        @keyframes aurora-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Layout & Sections --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        /* --- Landing/Entry Screen --- */
+        #landing {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background-color: var(--dark-bg);
+            display: grid;
+            place-items: center;
+            transition: opacity 1.5s ease-out, visibility 1.5s;
+        }
+
+        #landing.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .entry-content {
+            text-align: center;
+        }
+        
+        .entry-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--secondary-text);
+            margin-bottom: 2rem;
+        }
+        
+        #enter-button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--primary-text);
+            padding: 15px 30px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #enter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-glow-2);
+        }
+
+        #enter-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, var(--accent-glow-2), transparent);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #enter-button:hover::before {
+            opacity: 0.15;
+        }
+        
+        /* --- Main Content (Initially hidden) --- */
+        #main-content {
+            opacity: 0;
+            transition: opacity 1s ease-in 1s; /* Fades in after landing screen fades out */
+        }
+        
+        #main-content.visible {
+            opacity: 1;
+        }
+
+        /* --- Hero Section --- */
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 10vw, 7rem); /* Responsive font size */
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        
+        /* Kinetic Typography: Individual letter animation */
+        .hero-title span {
+            display: inline-block;
+            opacity: 0;
+            animation: letter-reveal 0.8s forwards;
+        }
+
+        @keyframes letter-reveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--secondary-text);
+            margin-top: 1rem;
+        }
+        
+        .scroll-down-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--secondary-text);
+            opacity: 0;
+            animation: fade-in 1s ease 2s forwards, bounce 2s infinite 3s;
+        }
+        
+        @keyframes fade-in {
+            to { opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+
+
+        /* --- Memories Section --- */
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            color: var(--primary-text);
+        }
+
+        .timeline {
+            display: grid;
+            gap: 4rem;
+            width: 100%;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+        
+        /* Alternating layout for timeline items */
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+        
+        .timeline-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h3 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-text);
+        }
+
+        .timeline-content p {
+            font-size: 1rem;
+            color: var(--secondary-text);
+        }
+
+        /* --- Appreciation Section (The Letter) --- */
+        .letter-content {
+            max-width: 700px;
+            font-size: 1.2rem;
+            line-height: 2;
+            text-align: left;
+            font-weight: 300;
+        }
+        
+        .letter-content p {
+            margin-bottom: 2rem;
+        }
+        
+        .signature {
+            text-align: right;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+
+        /* --- Future Section --- */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .future-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .future-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .future-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            /* Using text gradients for icons */
+            background: linear-gradient(45deg, var(--accent-glow-1), var(--accent-glow-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .future-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .future-card p {
+            color: var(--secondary-text);
+        }
+
+        /* --- Finale Section --- */
+        .finale-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            color: #ff4757; /* A warm red for the heart */
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+
+        .finale-text {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 400;
+        }
+
+        /* --- Scroll Animation --- */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--transition-speed) ease-out, transform var(--transition-speed) ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .timeline-item, .timeline-item:nth-child(even) {
+                flex-direction: column;
+                text-align: center;
+            }
+            .timeline-img {
+                width: 100%;
+                height: 250px;
+            }
+            .letter-content {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 
+    ==================================
+    LANDING SCREEN
+    The first thing he'll see.
+    ==================================
+    -->
+    <div id="landing">
+        <div class="entry-content">
+            <h2 class="entry-title">A Message for My Favorite Person</h2>
+            <button id="enter-button">Begin the Journey</button>
+        </div>
+    </div>
+
+    <!-- 
+    ==================================
+    MAIN WEBSITE CONTENT
+    This is hidden until the button is clicked.
+    ==================================
+    -->
+    <main id="main-content">
+
+        <!-- 
+        SECTION 1: HERO
+        The big "Happy Birthday" reveal.
+        
+        **EDIT THIS SECTION**
+        - Replace "[Boyfriend's Name]" with his name.
+        -->
+        <section id="hero" class="section">
+            <div class="container">
+                <h1 class="hero-title" id="kinetic-title">Happy Birthday [Boyfriend's Name]</h1>
+                <p class="hero-subtitle animate-on-scroll">My love, my partner, my everything.</p>
+            </div>
+            <div class="scroll-down-indicator">Scroll to continue</div>
+        </section>
+
+        <!-- 
+        SECTION 2: MEMORIES
+        A timeline of your special moments.
+        
+        **EDIT THIS SECTION**
+        - Replace the `<h3>` title for each memory.
+        - Replace the `<p>` description with your own words.
+        - Replace the image URLs in `src="..."`. You can use links from Google Photos, Imgur, or any image hosting service. For placeholders, I'm using picsum.photos.
+        -->
+        <section id="memories" class="section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Our Journey So Far...</h2>
+                <div class="timeline">
+                    <!-- Memory 1 -->
+                    <div class="timeline-item animate-on-scroll">
+                        <img src="https://picsum.photos/400/400?random=1" alt="A cherished memory" class="timeline-img">
+                        <div class="timeline-content">
+                            <h3>The Day We Met</h3>
+                            <p>[Describe the memory here. e.g., "I still remember the way you smiled at me at that coffee shop. I had no idea my whole world was about to change."]</p>
+                        </div>
+                    </div>
+                    <!-- Memory 2 -->
+                    <div class="timeline-item animate-on-scroll">
+                        <img src="https://picsum.photos/400/400?random=2" alt="Another cherished memory" class="timeline-img">
+                        <div class="timeline-content">
+                            <h3>Our First Adventure</h3>
+                            <p>[Describe the memory here. e.g., "That spontaneous road trip to the coast, with the terrible music and amazing conversations, is still one of my favorite days ever."]</p>
+                        </div>
+                    </div>
+                    <!-- Memory 3 -->
+                    <div class="timeline-item animate-on-scroll">
+                        <img src="https://picsum.photos/400/400?random=3" alt="A third cherished memory" class="timeline-img">
+                        <div class="timeline-content">
+                            <h3>A Simple, Perfect Moment</h3>
+                            <p>[Describe a smaller, intimate memory. e.g., "Just cooking dinner together on a Tuesday night, laughing about nothing. Those are the moments I treasure the most."]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+        SECTION 3: APPRECIATION
+        A heartfelt letter about why you love him.
+        
+        **EDIT THIS SECTION**
+        - This is the most personal part. Replace all the text inside the `<p>` tags with your own words.
+        - Change "[Sweet Nickname]" and "[Your Name]".
+        -->
+        <section id="appreciation" class="section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Why I Love You</h2>
+                <div class="letter-content animate-on-scroll">
+                    <p>My Dearest [Sweet Nickname],</p>
+                    <p>[Write about his qualities. e.g., "It's not just the big moments. It's the way you make me laugh when I'm stressed. It's how you listen, truly listen, to everything I have to say. You make me feel seen, cherished, and safe in a way I never knew was possible."]</p>
+                    <p>[Write about how he has impacted your life. e.g., "You've taught me what it means to be a better person, to be more patient, and to love more deeply. Every day with you is a gift, and my world is infinitely brighter and more beautiful because you're in it."]</p>
+                    <p class="signature">Forever and always,<br>[Your Name]</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+        SECTION 4: THE FUTURE
+        Looking forward to more adventures together.
+        
+        **EDIT THIS SECTION**
+        - You can customize the titles `<h3>` and descriptions `<p>` for each card.
+        -->
+        <section id="future" class="section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">To Our Future...</h2>
+                <div class="future-grid">
+                    <!-- Future Card 1 -->
+                    <div class="future-card animate-on-scroll" style="transition-delay: 0.1s;">
+                        <div class="future-card-icon">✈️</div>
+                        <h3>More Adventures</h3>
+                        <p>To all the places we'll go and the sights we've yet to see.</p>
+                    </div>
+                    <!-- Future Card 2 -->
+                    <div class="future-card animate-on-scroll" style="transition-delay: 0.2s;">
+                        <div class="future-card-icon">😂</div>
+                        <h3>More Laughter</h3>
+                        <p>To a lifetime of inside jokes and laughing until we cry.</p>
+                    </div>
+                    <!-- Future Card 3 -->
+                    <div class="future-card animate-on-scroll" style="transition-delay: 0.3s;">
+                        <div class="future-card-icon">🏡</div>
+                        <h3>More Growth</h3>
+                        <p>To building our dreams together, side-by-side, always.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 
+        SECTION 5: FINALE
+        The final, simple, and powerful message.
+        
+        **EDIT THIS SECTION**
+        - Replace "[Boyfriend's Name]" one last time.
+        -->
+        <section id="finale" class="section">
+            <div class="container animate-on-scroll">
+                <div class="finale-icon">❤️</div>
+                <p class="Happiest birthday mumma mera baccha 🤍🌍♾️💋💎i wish all ur dreams come true inshallah 🤲🏻💞🫂👣 enjoy your day and cheers to 20 sweetheart🥂🥳 this day is always mean to be bright and beautiful bcoz the love of my life was born on this day 🫀💎💋stay always be happy, joyfull and strengthen 😘♾️ I love you so so so much mera duniya 🥺♾️💋💎😘🥺🫀 I'm thankyou for every moment we spend together and I wish our happiness never ends..!!
+May this year be the one where you chase your dreams and catch them with me cheering you on at every step ✨🤍🥂">Happy birthday, [CHETHUU].<br>I love you more than words can say.</p>
+            </div>
+        </section>
+    </main>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- 1. Entry Screen Logic ---
+        const landingPage = document.getElementById('landing');
+        const enterButton = document.getElementById('enter-button');
+        const mainContent = document.getElementById('main-content');
+        const body = document.body;
+
+        enterButton.addEventListener('click', () => {
+            // Fade out the landing page
+            landingPage.classList.add('hidden');
+            
+            // Allow scrolling on the body
+            body.style.overflowY = 'auto';
+            
+            // Fade in the main content after the landing page is gone
+            mainContent.classList.add('visible');
+
+            // Trigger the kinetic text animation
+            kineticTextAnimation();
+        });
+
+        // --- 2. Kinetic Typography for Hero Title ---
+        function kineticTextAnimation() {
+            const title = document.getElementById('kinetic-title');
+            if (!title) return;
+            const text = title.textContent;
+            title.innerHTML = ''; // Clear original text
+            
+            text.split('').forEach((letter, index) => {
+                const span = document.createElement('span');
+                span.textContent = letter === ' ' ? '\u00A0' : letter; // Handle spaces
+                span.style.animationDelay = `${index * 0.05}s`;
+                title.appendChild(span);
+            });
+        }
+        
+        // --- 3. Scroll-triggered Animations ---
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Optional: stop observing once it's visible so it doesn't re-animate
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        });
+
+        animatedElements.forEach(element => {
+            observer.observe(element);
+        });
+
+    });
+    </script>
+
+</body>
+</html>
